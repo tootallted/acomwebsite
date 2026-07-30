@@ -312,3 +312,86 @@ footer {
 .voice-dots button.is-active {
   background: var(--accent);
 }
+
+/* Analytics Outlook questionnaire */
+.outlook-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+.form-field {
+  margin-bottom: 1.75rem;
+}
+.form-field:last-of-type {
+  margin-bottom: 0;
+}
+.form-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.form-field .field-example {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 0.8rem;
+  resize: vertical;
+}
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.form-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form-submit {
+  font: inherit;
+  font-weight: 600;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.75rem;
+  cursor: pointer;
+}
+.form-submit:hover {
+  opacity: 0.92;
+}
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.form-status {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.form-status.is-error {
+  color: #c0392b;
+}
+.form-status.is-success {
+  color: var(--accent);
+}
+.outlook-success {
+  text-align: center;
+  padding: 2rem;
+}
+.outlook-success h2 {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}

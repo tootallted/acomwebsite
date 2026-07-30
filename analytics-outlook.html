@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics Outlook &middot; Adventag</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Adventag</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="case-studies/index.html">Case Studies</a>
+      <a href="analytics-outlook.html" class="active">Analytics Outlook</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <h1>Analytics Outlook</h1>
+  <p class="tagline">A few honest questions about how your organization actually uses its data.</p>
+  <p>
+    This isn't a quiz &mdash; it's a value proposition model you build for
+    yourself. Most organizations don't have a data problem, they have a focus
+    problem: it's not that you have data, it's whether you're using it to run
+    the business. Answer these a few honest questions and you'll have a clearer
+    picture of where the gap is, and it gives us a real starting point if you'd
+    like Adventag's help closing it.
+  </p>
+</header>
+
+<main>
+
+  <div id="outlook-form-wrapper">
+    <form id="outlook-form" class="outlook-form" action="https://formspree.io/f/mvzenajd" method="POST">
+
+      <input type="hidden" name="_subject" value="website feedback">
+      <input type="text" name="_gotcha" class="form-honeypot" tabindex="-1" autocomplete="off">
+
+      <div class="form-field">
+        <label for="email">What's your email address?</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-field">
+        <label for="sources">What data sources do you work with &mdash; in-house systems, and other services that expose your data back to you via APIs of some sort?</label>
+        <p class="field-example">e.g. we connect to our Microsoft Dynamics ERP and also use Stripe to process payments</p>
+        <textarea id="sources" name="Data sources" rows="3"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="visualization">What data visualization tools are you using?</label>
+        <p class="field-example">e.g. I use Power BI, but we're flooding in too many reports to even look at these days</p>
+        <textarea id="visualization" name="Visualization tools" rows="3"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="operational-change">What's the last operational change you made, and how did you watch that change have its effect in your data?</label>
+        <p class="field-example">e.g. you kicked off a marketing campaign, and then watched the traffic to your website tick up and convert into purchases</p>
+        <textarea id="operational-change" name="Last operational change" rows="3"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="anything-else">Do you want to mention anything else unique to your business, or that you want to accelerate to done right now?</label>
+        <textarea id="anything-else" name="Anything else" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">Send my answers</button>
+      <p class="form-status" role="status"></p>
+    </form>
+  </div>
+
+  <div id="outlook-success" class="outlook-form outlook-success" style="display:none;">
+    <h2>Thanks &mdash; got it.</h2>
+    <p>Your answers are on their way to Adventag. We'll follow up at the email address you gave us.</p>
+  </div>
+
+</main>
+
+<footer>
+  &mdash; Ted
+</footer>
+
+<script src="assets/outlook-form.js" defer></script>
+
+</body>
+</html>
