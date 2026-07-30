@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DMI Solutions Case Study &middot; The AAIM Method</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">AAIM</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html" class="active">Case Studies</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <article class="case-study" style="padding-top: 3rem;">
+
+    <p class="stack">TimeXtender &middot; Azure &middot; Power BI &middot; AAIM Method</p>
+    <h1>Unifying Two ERPs Under One GL</h1>
+    <p class="dek">The Trademark Cosmetics &rarr; DMI Solutions case study.</p>
+
+    <section>
+      <h2>Engagement Overview</h2>
+      <p>
+        The client began as Trademark Cosmetics, a manufacturer and distributor
+        operating on the Epicor ERP platform. Partway through the relationship,
+        Trademark combined with a second operating company running on the Alere
+        ERP system. The combined entity was rebranded DMI Solutions, and the
+        analytics engagement carried forward across the name change &mdash; meaning
+        the data platform had to be built to serve two legacy ERP environments as
+        if they were one company, while the corporate identity above them changed
+        underneath it.
+      </p>
+      <p>
+        The full technical stack &mdash; the Azure VM, the TimeXtender (TDI)
+        instance, the ingestion pipelines, and the Power BI reporting layer &mdash;
+        was built and deployed entirely in Azure, giving both legacy companies a
+        single cloud-hosted analytics environment regardless of which ERP their
+        transactions originated in.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Challenge</h2>
+      <p>
+        Two companies, two ERPs, one set of financials to report on. Epicor and
+        Alere each carried their own chart of accounts, and neither had been
+        designed with the other in mind. Before any dashboard or financial report
+        could be trusted, the platform had to answer a basic question: when a GL
+        transaction posts in Alere, what account does it correspond to in the
+        model everyone downstream will actually use?
+      </p>
+      <p>
+        Beyond the chart-of-accounts mismatch, the two systems delivered data
+        through completely different mechanisms &mdash; Epicor via a live API
+        connection, Alere via CSV extracts dropped into SharePoint on a daily
+        cadence. Any unified GL structure had to absorb both delivery patterns
+        without one source's quirks (a delayed file drop, a late-posted
+        transaction) silently corrupting the numbers for the other.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: GL Account Consolidation</h2>
+      <p>
+        Rather than build a brand-new, neutral chart of accounts, the team made
+        the Trademark/Epicor structure the model of record. New accounts were
+        created in that model wherever Alere's chart didn't already have an
+        equivalent, and a persistent Alere-to-Trademark account mapping table was
+        built to translate every Alere GL transaction into its corresponding
+        Epicor-model account. That mapping isn't a one-time crosswalk &mdash; it's
+        a living reference table, appended to whenever Alere posts activity
+        against a new account that hasn't been mapped yet, so the model stays
+        current as the underlying business keeps operating.
+      </p>
+      <p>
+        Because both ERPs delivered GL data at the same transaction-level grain,
+        the mapping didn't need to reconcile summarized entries against detailed
+        ones &mdash; it only had to translate account identity, not transaction
+        granularity. That made the crosswalk itself the whole solution to the
+        chart-of-accounts problem, rather than one piece of a larger
+        grain-reconciliation exercise.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: Incremental Loading Across Two Delivery Mechanisms</h2>
+      <p>
+        Epicor data was pulled repeatedly through its API on an incremental
+        basis. Alere's daily SharePoint file drops were picked up the same way
+        &mdash; the CSVs land, and the load process picks them up seamlessly
+        without manual intervention. But file-based delivery introduced a timing
+        problem live API polling didn't have as severely: transactions don't
+        always arrive in the system on the day they actually happened.
+      </p>
+      <p>
+        To solve for that, every incremental record carries two dates: a post
+        date (when the transaction actually occurred in the business) and a
+        create date (when the record actually landed in the source system &mdash;
+        which, for file-based Alere data, can trail well behind the post date).
+        Both dates are fully built into the incremental load logic, so the
+        platform can correctly place a transaction in the period it belongs to,
+        even when it's picked up late, rather than either missing it or
+        misattributing it to the day it happened to arrive.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mapping to the AAIM Method</h2>
+      <div class="aaim-block">
+        <div>
+          <h3>Acquire</h3>
+          <p>
+            Two structurally different ERPs, two delivery mechanisms &mdash; a
+            live Epicor API and daily Alere file drops into SharePoint &mdash;
+            were both brought into one Azure-hosted TimeXtender environment.
+            Acquisition here wasn't just &ldquo;get a connection&rdquo;; it meant
+            designing ingestion that could tolerate the very different
+            reliability and timing characteristics of an API versus a file drop,
+            and land both in a state ready for the same downstream model.
+          </p>
+        </div>
+        <div>
+          <h3>Automate</h3>
+          <p>
+            The account-mapping table and the post-date/create-date incremental
+            load logic are what turned that acquisition into something that runs
+            on its own. New Alere accounts get mapped as they appear rather than
+            requiring a manual quarterly review, and late-arriving file data is
+            placed in the correct period automatically rather than triggering a
+            manual correction. That's the automation layer doing the
+            reconciliation work a human would otherwise have to redo every
+            reporting cycle.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Outcome</h2>
+      <p>
+        The engagement didn't end with the initial buildout. It continued through
+        a validation and support phase, then carried through the
+        Trademark-to-DMI Solutions rebrand, and into a later phase that extended
+        the same Alere and Epicor pipelines to cover additional inventory and
+        reconciliation work. The GL account model built during the original
+        consolidation has remained the backbone that later phases of the
+        engagement built on top of &mdash; a sign that the Acquire and Automate
+        work held up as the business itself changed shape.
+      </p>
+    </section>
+
+  </article>
+</main>
+
+<footer>
+  &mdash; Ted
+</footer>
+
+</body>
+</html>
