@@ -206,30 +206,34 @@ footer {
 
 /* Home page layout: main column + sidebar */
 .layout {
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 780px) minmax(280px, 320px);
-  gap: 2.5rem;
-  align-items: start;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
 }
 .layout-main {
+  flex: 1 1 auto;
   min-width: 0;
 }
-@media (max-width: 960px) {
+@media (max-width: 700px) {
   .layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 }
 
-/* Sidebar: rotating "Voices on Data" carousel */
+/* Sidebar: rotating "Voices on Data" carousel, top-right, ~1/3 page width */
 .sidebar {
+  flex: 0 0 33%;
+  max-width: 33%;
   padding: 4rem 1.5rem 2rem 0;
   position: sticky;
   top: 4.5rem;
 }
-@media (max-width: 960px) {
+@media (max-width: 700px) {
   .sidebar {
+    flex-basis: auto;
+    max-width: 100%;
     position: static;
     padding: 0 1.5rem 2rem;
   }
