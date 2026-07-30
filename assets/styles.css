@@ -203,3 +203,108 @@ footer {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+/* Home page layout: main column + sidebar */
+.layout {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 780px) minmax(280px, 320px);
+  gap: 2.5rem;
+  align-items: start;
+}
+.layout-main {
+  min-width: 0;
+}
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sidebar: rotating "Voices on Data" carousel */
+.sidebar {
+  padding: 4rem 1.5rem 2rem 0;
+  position: sticky;
+  top: 4.5rem;
+}
+@media (max-width: 960px) {
+  .sidebar {
+    position: static;
+    padding: 0 1.5rem 2rem;
+  }
+}
+.voices-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.voices-title {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+.voice-slide {
+  display: none;
+}
+.voice-slide.is-active {
+  display: block;
+}
+.voice-slide .tiktok-embed {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 1rem !important;
+}
+.voice-caption {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.voice-quote {
+  margin: 0 0 0.75rem;
+  font-style: italic;
+  font-size: 1rem;
+}
+.voice-attribution {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.voice-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+}
+.voice-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  line-height: 1;
+  font-size: 1.1rem;
+  color: var(--fg);
+  cursor: pointer;
+}
+.voice-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.voice-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+.voice-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+}
+.voice-dots button.is-active {
+  background: var(--accent);
+}
