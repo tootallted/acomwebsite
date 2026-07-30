@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peak Utility Services Group Case Study &middot; The AAIM Method</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Adventag</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html" class="active">Case Studies</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <article class="case-study" style="padding-top: 3rem;">
+
+    <p class="stack">TimeXtender &middot; Azure &middot; Azure Functions &middot; AAIM Method</p>
+    <h1>Wiring the Last Mile</h1>
+    <p class="dek">The Peak Utility Services Group case study.</p>
+
+    <section>
+      <h2>Engagement Overview</h2>
+      <p>
+        Peak Utility Services Group fixes the last-mile connection &mdash; the
+        final stretch of infrastructure between a utility's network and the
+        customer it serves. Its crews work under contract to large, established
+        utility companies, many of which still run their own operations on paper
+        tickets and Excel workbooks and dictate the exact process a contractor
+        like Peak has to follow to get paid. Peak's own internal systems, by
+        contrast, are anything but paper-based: Viewpoint Vista for its ERP and
+        job costing, UKG for workforce and payroll, Fleetio for fleet and asset
+        management, Comdata for fuel card transactions, Motive for vehicle
+        telematics, TrueContext for digital field forms, Fuelcloud for fuel
+        consumption, and a set of custom Azure Function&ndash;based APIs Adventag
+        built to expose Peak's own warehouse management data to the outside
+        world. Reconciling that modern, API-driven backend against the
+        paper-and-spreadsheet world Peak's customers still operate in &mdash;
+        while making sure every job and every contractor gets paid correctly
+        &mdash; is the problem the engagement was built to solve.
+      </p>
+      <p>
+        All of it runs through TimeXtender as the central hub. Data lands
+        incrementally, wherever a source supports it, in ODX &mdash; Peak's
+        Operational Data Exchange, functioning as a data lake. From there it's
+        staged, business logic and project/job rules are applied, and the
+        results are pushed forward into ODS, the Operational Data Store that
+        serves as the warehouse layer Peak's reporting and writeback processes
+        run on.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Challenge</h2>
+      <p>
+        Peak's data problem runs in two directions at once. Inbound, it has to
+        ingest from eight-plus vendor systems that each expose data differently
+        &mdash; some through clean REST APIs, some through legacy CData drivers,
+        some through CSV drops, and some, historically, through nothing more
+        than a driver's paper ticket. Outbound, Peak's own customers &mdash;
+        utilities like Oncor &mdash; dictate the billing formats, work-order
+        structures, and reporting cadence Peak has to conform to, regardless of
+        what's easiest on Peak's end. A platform that only solved the ingestion
+        half of that problem would still leave Peak translating everything by
+        hand at the point where it actually mattered: getting contractors paid
+        for completed work.
+      </p>
+      <p>
+        That job-and-project logic isn't a reporting nicety at Peak &mdash; it's
+        the mechanism that turns a completed field ticket into a paycheck. Fuel
+        costs, vehicle depreciation, driver compliance records, and job-site data
+        submissions all have to resolve back to the right vehicle, the right
+        employee, and the right job before payment logic can run.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: Retiring CData for Native Connections</h2>
+      <p>
+        Peak's TimeXtender environment had grown up on CData drivers across 48
+        destination tables spanning Comdata, Fleetio, Fuelcloud, and UKG. CData
+        is a convenient way to stand up a connection quickly, but it's also a
+        dependency layer Peak didn't need once each source's native XML, CSV,
+        and REST interfaces could be connected directly. Adventag rebuilt every
+        one of those 48 tables on native connections, stood up the corresponding
+        ODX lake tables with their own schedule and storage management, and
+        remapped each new ODX destination back onto the existing ODS tables with
+        no planned schema changes. The result is a lighter, more directly-owned
+        pipeline with one fewer vendor dependency and one fewer point of failure
+        between Peak and its data.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: Writebacks That Close the Loop on Getting Paid</h2>
+      <p>
+        Ingesting data is only half the job when the systems themselves need to
+        stay in sync to keep the business running. Adventag built a set of
+        writeback interfaces that push processed data back out to the systems
+        Peak's teams actually work in day to day: Comdata fuel consumption,
+        combined with an ODS KeyBank feed, is mapped and written back into Vista
+        at the vehicle level, so fuel spend lands against the right asset without
+        manual entry. Vista's depreciation values are written forward into
+        Fleetio to keep asset values current in the system Peak's field and
+        fleet teams use daily. And JJ Keller compliance data &mdash; driver
+        qualification and eligibility records &mdash; is synced into Fleetio's
+        employee list, automatically adding qualified participants and removing
+        ones who no longer meet requirements. Each of these loops replaces a
+        manual reconciliation step that used to sit between two systems that had
+        no reason to disagree with each other.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: A Custom API Layer for Digital Field Forms</h2>
+      <p>
+        Peak's field crews had already moved off paper onto TrueContext, but
+        TrueContext still needed a reliable channel into Peak's warehouse
+        management data and a place to land the forms crews submitted from the
+        field. Adventag stood up a pair of Azure Function&ndash;based APIs to
+        close that gap: a GET interface with six query modes mirroring six WMS
+        tables, built with paging and incremental filtering based on each
+        record's modified date, and a POST interface that receives and logs
+        incoming field submissions, with processing logic that stores the posted
+        data in an Azure SQL database and a pair of warehouse views built on top
+        of it. Both interfaces run behind bearer token authentication. It's the
+        same pattern Peak's legacy customers still run on paper for &mdash; a
+        technician filling out a form in the field &mdash; rebuilt as a
+        governed, auditable API instead of a stack of scanned tickets.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: Extending the Platform as Peak's Vendor Stack Grows</h2>
+      <p>
+        The ODX/ODS architecture is built to keep absorbing new sources rather
+        than requiring a rebuild each time Peak adds one. When Peak needed a
+        governed sync between Fleetio and its safety-and-compliance platform,
+        KPA, Adventag built diff logic keyed on serial number to identify new and
+        changed equipment records, encoded them to KPA's CSV data-load
+        specification, and wrapped the whole thing in pre- and post-run
+        validation so every sync run produces an auditable count of what
+        changed. When Peak wanted Motive's fleet telematics data in the
+        warehouse, Adventag built a configuration that handles Motive's paging,
+        incremental filtering, and the API's v2/v3 version differences, extended
+        straight through ODX into the reporting layer. And as UKG's payroll
+        elements evolved &mdash; new employee deduction codes among them &mdash;
+        the same TimeXtender environment absorbed the changes alongside a
+        version upgrade, without disrupting the production schedule Peak's teams
+        depend on.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mapping to the AAIM Method</h2>
+      <div class="aaim-block">
+        <div>
+          <h3>Acquire</h3>
+          <p>
+            Eight-plus vendor systems &mdash; ERP, workforce, fleet, fuel,
+            telematics, compliance, and field-capture platforms &mdash; each
+            with its own API shape, authentication model, and delivery cadence,
+            were brought into one Azure-hosted TimeXtender environment through
+            ODX. Acquisition here meant building ingestion patterns tolerant of
+            everything from clean REST APIs to CData-wrapped legacy connections,
+            and, in the case of TrueContext, standing up entirely new Azure
+            Function endpoints where no interface existed yet.
+          </p>
+        </div>
+        <div>
+          <h3>Automate</h3>
+          <p>
+            The writeback interfaces into Vista and Fleetio, the KPA
+            diff-and-sync logic, and the incremental filtering built into the
+            Motive and TrueContext integrations are what let this run without a
+            person in the loop translating between systems. Fuel costs land
+            against the right vehicle automatically. Qualified drivers get added
+            and disqualified ones get removed without a manual review cycle.
+            That automation layer is what actually gets contractors paid on
+            time, because the job and project logic resolves itself before it
+            reaches a person.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Outcome</h2>
+      <p>
+        The engagement has run continuously since Peak first implemented
+        TimeXtender, expanding one vendor system and one writeback loop at a
+        time rather than through a single big-bang rollout. Peak has retired a
+        legacy, costly reporting tool it no longer needed, moved its TimeXtender
+        usage from mostly-ingestion to mostly-analytics, and stood up a
+        production and development environment split to keep new work from
+        destabilizing what already runs. The CData retirement, the Vista and
+        Fleetio writebacks, the TrueContext API layer, and the KPA and Motive
+        integrations are all still-active threads of the same engagement &mdash;
+        proof that the ODX-to-ODS architecture Adventag built has kept pace with
+        Peak's business as its vendor stack, its customer requirements, and its
+        own definition of &ldquo;getting paid on time&rdquo; have all continued
+        to evolve.
+      </p>
+    </section>
+
+  </article>
+</main>
+
+<footer>
+  &mdash; Ted
+</footer>
+
+</body>
+</html>
