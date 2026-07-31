@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sound Transit Case Study &middot; The AAIM Method</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Adventag</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html" class="active">Case Studies</a>
+      <a href="../analytics-outlook.html">Analytics Outlook</a>
+      <a href="../why-timextender.html">Why TimeXtender</a>
+      <a href="../voices-on-data.html">Voices on Data</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <article class="case-study" style="padding-top: 3rem;">
+
+    <p class="stack">TimeXtender &middot; SQL Server &middot; Power BI &middot; AAIM Method</p>
+    <h1>From 300 Pages to Half a Page</h1>
+    <p class="dek">The Sound Transit on-time performance case study.</p>
+
+    <section>
+      <h2>Engagement Overview</h2>
+      <p>
+        Sound Transit was building a brand-new light rail line through downtown
+        Seattle &mdash; over a dozen stations end to end &mdash; and, before a
+        single train ran in revenue service, issued an RFP for roughly 50
+        reports to monitor the operation. It was a reporting philosophy built
+        for a pre-IoT world, applied to a system that was about to generate
+        sensor-driven operational data every few seconds. Once trains started
+        running, on-time performance came in under 55% across all runs,
+        throughout the day, and the agency's own reporting couldn't tell
+        anyone why. Findings arrived as 300-page transaction log reports with
+        zero aggregation &mdash; sometimes literally printed on paper.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Challenge</h2>
+      <p>
+        With no established practice for interrogating the numbers, sub-55%
+        on-time performance got treated as one undifferentiated problem. In
+        reality, the systems responsible for train monitoring, safety, and
+        speed control along the alignment were all working exactly as
+        designed &mdash; the problem was invisible precisely because nobody
+        could see past the volume of unaggregated data to find where in the
+        system it was actually occurring.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: Aggregation That Fits on Half a Page</h2>
+      <p>
+        Adventag organized Sound Transit's ARINC-based train-tracking data
+        into a warehouse that could actually be queried, not just archived
+        &mdash; replacing page after page of transaction logs with a live,
+        half-page operational view. The moment the data could be sliced by
+        direction of travel, the story changed completely: northbound trains
+        were late roughly 70% of the time, while southbound trains ran on
+        time about 95% of the time. Blended together across a full day of
+        service, those two very different realities averaged out to the
+        sub-55% number that had been masking the real problem.
+      </p>
+    </section>
+
+    <section>
+      <h2>The Solution: Start Time, Not Run Time</h2>
+      <p>
+        Isolating the problem by direction was only half the answer. Once the
+        data was cut further, it showed the trains weren't running long once
+        they were underway &mdash; they were starting late. The southernmost
+        station on the line doubled as the operators' break stop, and the
+        delay was happening entirely before a train ever left it: operators
+        weren't tracking how long they'd spent on a break before starting
+        their run north. It had nothing to do with the monitoring, safety, or
+        speed-control systems along the alignment, all of which were
+        functioning exactly as designed.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mapping to the AAIM Method</h2>
+      <div class="aaim-block">
+        <div>
+          <h3>Insight</h3>
+          <p>
+            Aggregating ARINC train-tracking data into a warehouse turned an
+            unreadable stack of transaction logs into a single view that
+            could be split by direction and by segment. That's what let a
+            problem that looked uniform &mdash; sub-55% on time, full stop
+            &mdash; reveal itself as two entirely different problems hiding
+            behind one blended number.
+          </p>
+        </div>
+        <div>
+          <h3>Knowledge</h3>
+          <p>
+            Once the root cause was pinned to start time at the southern
+            terminus rather than anything mechanical along the route, the fix
+            was almost anticlimactic: a simple monitoring presence at that one
+            station. The problem disappeared quickly, and Sound Transit walked
+            away with something more durable than a fixed number &mdash; the
+            knowledge of exactly where, in the system, a schedule could
+            quietly fail.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Outcome</h2>
+      <p>
+        Sometimes the metric you're trying to improve doesn't need new
+        systems, new sensors, or new software &mdash; it needs data organized
+        well enough to be seen, not just logged. Once Sound Transit could see
+        the actual pattern instead of a fog of unaggregated reports, the fix
+        took days, not another RFP cycle.
+      </p>
+    </section>
+
+  </article>
+</main>
+
+<footer>
+  &mdash; Ted
+</footer>
+
+</body>
+</html>
