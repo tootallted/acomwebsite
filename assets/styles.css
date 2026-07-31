@@ -6,6 +6,7 @@
   --accent: #2563eb;
   --card: #f5f6f8;
   --border: #e2e4e8;
+  --green: #16a34a;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -15,6 +16,7 @@
     --accent: #6ea8fe;
     --card: #1d2025;
     --border: #2a2d33;
+    --green: #22c55e;
   }
 }
 * { box-sizing: border-box; }
@@ -101,6 +103,41 @@ header.page-header p.tagline {
   color: white;
   font-weight: 700;
   font-size: 1.1rem;
+}
+
+/* Small AAIM-focus indicator (case studies) */
+.aaim-focus {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.6rem 0;
+}
+.aaim-focus .aaim-focus-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.aaim-dots {
+  display: flex;
+  gap: 0.3rem;
+}
+.aaim-dots span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.65rem;
+}
+.aaim-dots span.active {
+  background: var(--green);
+  color: white;
 }
 
 main {
