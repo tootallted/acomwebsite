@@ -1,0 +1,10 @@
+{
+  "sandbox": {
+    "network": {
+      "allowedDomains": [
+        "prod-peakweb-tcapi-get-g7dabqccdwb7btew.westcentralus-01.azurewebsites.net",
+        "analytics.wellifize.app"
+      ]
+    }
+  }
+}
