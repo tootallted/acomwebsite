@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Log a Transaction &middot; Adventag</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Adventag</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="case-studies/index.html">Case Studies</a>
+      <a href="analytics-outlook.html">Analytics Outlook</a>
+      <a href="why-timextender.html">Why TimeXtender</a>
+      <a href="voices-on-data.html">Voices on Data</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <h1>Log a Transaction</h1>
+  <p class="tagline">Manual entry, or hit this page as a webhook with a message parameter.</p>
+</header>
+
+<main>
+
+  <div id="form-wrapper">
+    <form id="transact-form" class="outlook-form">
+      <div class="form-field">
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" rows="3" maxlength="400" required></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="valuenum">Value (number)</label>
+        <input type="number" id="valuenum" name="valuenum" step="0.0001">
+      </div>
+
+      <div class="form-field">
+        <label for="valuetxt">Value (text, 20 char max)</label>
+        <input type="text" id="valuetxt" name="valuetxt" maxlength="20">
+      </div>
+
+      <div class="form-field">
+        <label for="json">JSON payload</label>
+        <textarea id="json" name="json" rows="4" style="font-family: monospace;"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="category">Category (20 char max)</label>
+        <input type="text" id="category" name="category" maxlength="20">
+      </div>
+
+      <div class="form-field">
+        <label for="project">Project (20 char max)</label>
+        <input type="text" id="project" name="project" maxlength="20">
+      </div>
+
+      <button type="submit" class="form-submit">Log Transaction</button>
+      <p class="form-status" role="status"></p>
+    </form>
+  </div>
+
+  <div id="webhook-status" class="outlook-form outlook-success" style="display:none;">
+    <p id="webhook-status-text">Logging&hellip;</p>
+  </div>
+
+</main>
+
+<footer>
+  &mdash; Ted
+</footer>
+
+<script>
+  // Public URL of the TransactApi service. Update this once the local API
+  // is reachable from the internet (see acomwebsite-transact-server/README.md).
+  var API_BASE = 'http://localhost:5080';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var webhookEl = document.getElementById('webhook-status');
+    var webhookText = document.getElementById('webhook-status-text');
+
+    if (params.has('message')) {
+      // Hit as a webhook: /transact.html?message=...&valuenum=...&...
+      document.getElementById('form-wrapper').style.display = 'none';
+      webhookEl.style.display = 'block';
+
+      var url = new URL(API_BASE + '/api/transact');
+      ['message', 'valuenum', 'valuetxt', 'json', 'category', 'project'].forEach(function (key) {
+        if (params.has(key)) url.searchParams.set(key, params.get(key));
+      });
+
+      fetch(url.toString())
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
+        .then(function () { webhookText.textContent = 'Logged.'; })
+        .catch(function () { webhookText.textContent = 'Failed to log transaction.'; });
+      return;
+    }
+
+    var form = document.getElementById('transact-form');
+    var statusEl = form.querySelector('.form-status');
+    var submitBtn = form.querySelector('.form-submit');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      statusEl.textContent = '';
+      statusEl.className = 'form-status';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      fetch(API_BASE + '/api/transact', {
+        method: 'POST',
+        body: new FormData(form)
+      })
+        .then(function (r) { return r.ok ? r.json() : r.json().then(function (d) { throw new Error(d.error || 'Failed'); }); })
+        .then(function () {
+          form.reset();
+          statusEl.textContent = 'Logged.';
+          statusEl.className = 'form-status is-success';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Log Transaction';
+        })
+        .catch(function (err) {
+          statusEl.textContent = err.message || 'Something went wrong.';
+          statusEl.className = 'form-status is-error';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Log Transaction';
+        });
+    });
+  });
+</script>
+
+</body>
+</html>
