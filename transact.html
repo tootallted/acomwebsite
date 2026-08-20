@@ -77,9 +77,10 @@
 </footer>
 
 <script>
-  // Public URL of the TransactApi service. Update this once the local API
-  // is reachable from the internet (see acomwebsite-transact-server/README.md).
-  var API_BASE = 'http://localhost:5080';
+  // Public URL of the TransactApi service, via a Cloudflare quick tunnel.
+  // NOTE: this is a free "quick tunnel" with no uptime guarantee — the URL
+  // changes every time the tunnel process restarts on the host machine.
+  var API_BASE = 'https://regions-least-inventory-schools.trycloudflare.com';
 
   document.addEventListener('DOMContentLoaded', function () {
     var params = new URLSearchParams(window.location.search);
