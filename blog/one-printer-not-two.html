@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Printer, Not Two &middot; Adventag</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Adventag</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../case-studies/index.html">Case Studies</a>
+      <a href="index.html" class="active">Blog</a>
+      <a href="../analytics-outlook.html">Analytics Outlook</a>
+      <a href="../why-timextender.html">Why TimeXtender</a>
+      <a href="../voices-on-data.html">Voices on Data</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <article class="blog-post" style="padding-top: 3rem;">
+
+    <p class="stack">Systems Thinking &middot; AAIM Method</p>
+    <h1>One Printer, Not Two: A Lesson in System Design from UPS</h1>
+    <p class="dek">A receipt printed on shipping-label stock, and what it says about building one system instead of two.</p>
+
+    <div class="aaim-focus">
+      <span class="aaim-focus-label">AAIM Focus</span>
+      <div class="aaim-dots">
+        <span>A</span><span class="active">A</span><span>I</span><span>M</span><span>K</span>
+      </div>
+    </div>
+
+    <section>
+      <p>
+        I dropped off a prepaid package at the UPS Store the other day. Simple
+        errand. Before I left, I asked for a receipt &mdash; not because I
+        needed one, but because if the shipment ever goes sideways, I want a
+        paper trail I can point to. Nine times out of ten I never look at it
+        again. But that tenth time matters.
+      </p>
+      <p>
+        What they handed me wasn't a receipt in the &ldquo;corner store, buy a
+        Snickers bar&rdquo; sense. It was printed on the same heavy, glossy
+        stock as a shipping label &mdash; the kind of material that's built to
+        survive a conveyor belt and stick to a box for a week. My first
+        reaction was almost indignant on the company's behalf: why would you
+        waste expensive label stock on a receipt nobody asked to see?
+      </p>
+      <p>
+        Then I actually thought about it, and the logic flipped completely.
+      </p>
+      <p>
+        Label stock is expensive because it has to be. Sticking a durable,
+        scannable label onto a package is core to UPS's business &mdash;
+        that's not a place to cut corners. But maintaining a second printing
+        system, with its own cheap paper stock, its own printer, its own
+        supply chain, its own thing to run out of and fix when it jams
+        &mdash; that's not core to the business at all. It's overhead in
+        service of a transaction that happens maybe once a week per customer.
+      </p>
+      <p>
+        So the real decision wasn't &ldquo;cheap paper vs. expensive
+        paper.&rdquo; It was &ldquo;one system vs. two systems.&rdquo; And once
+        you frame it that way, the expensive-looking receipt is actually the
+        cheaper choice. Running one printer that does everything, even if the
+        per-unit cost is a little higher, beats running two printers where one
+        of them exists purely to save pennies on stock you already have plenty
+        of infrastructure for.
+      </p>
+    </section>
+
+    <section>
+      <h2>The same decision shows up constantly in data pipelines</h2>
+      <p>
+        This is a pattern I run into all the time in ETL and analytics work.
+        There's always a tempting argument for building a second,
+        &ldquo;lighter&rdquo; system for some subset of the work &mdash; a
+        separate lightweight extract for the small tables, a bespoke script
+        for the &ldquo;simple&rdquo; reports, a parallel process because the
+        main pipeline &ldquo;feels like overkill&rdquo; for this one use case.
+      </p>
+      <p>
+        And sometimes that instinct is right. But a lot of the time, it's the
+        receipt-paper trap: you're optimizing a transactional cost while
+        ignoring the much bigger cost of maintaining an entirely separate
+        system &mdash; one with its own failure modes, its own documentation,
+        its own person who has to remember how it works six months from now
+        when it breaks.
+      </p>
+      <p>
+        The question worth asking isn't &ldquo;what's the cheapest way to
+        handle this specific case?&rdquo; It's &ldquo;can our existing system
+        absorb this, even if it's not the perfectly optimized path for
+        it?&rdquo; Usually, the answer is yes &mdash; and the few extra cents
+        (or compute cycles, or minutes of runtime) you spend by not building a
+        second bespoke pipeline are cheap compared to the ongoing tax of
+        maintaining two systems instead of one.
+      </p>
+      <p>
+        Simplicity isn't always the option that looks cheapest line-item by
+        line-item. Sometimes it's the option that costs a little more per
+        transaction and a lot less in brainpower, forever.
+      </p>
+    </section>
+
+    <section>
+      <h2>Mapping to the AAIM Method</h2>
+      <div class="aaim-block">
+        <div>
+          <h3>Automate</h3>
+          <p>
+            This is the Automate step showing its teeth. Automation only pays
+            off if it's something you build once and trust &mdash; the moment
+            you're running two pipelines instead of one, you've doubled the
+            thing you have to trust, document, and fix. A single system that
+            absorbs the occasional awkward case is worth more than two
+            systems that are each individually a little more efficient.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </article>
+</main>
+
+<footer>
+  &mdash; Ted
+</footer>
+
+</body>
+</html>
