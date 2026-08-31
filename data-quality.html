@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Data Quality &middot; Adventag</title>
 <link rel="stylesheet" href="assets/styles.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -28,88 +29,143 @@
   <h1>Data Quality</h1>
   <p class="tagline">Connect a data source, peek at it, then interrogate it.</p>
   <p>
-    Save a connection to a database, API, or spreadsheet and give it a name you'll
-    recognize &mdash; &ldquo;the ERP,&rdquo; &ldquo;the budget spreadsheet.&rdquo; Once
-    it's connected we'll pull the first 25 records so you can see what's actually in
-    there, then you can ask questions about data quality across columns, tables, and
+    Save a connection to a database and give it a name you'll recognize
+    &mdash; &ldquo;the ERP,&rdquo; &ldquo;the budget spreadsheet.&rdquo; Pull the
+    first 25 records from a table to see what's actually in there, then run
+    read-only queries to check data quality across columns, tables, and
     sources.
   </p>
 </header>
 
 <main>
 
-  <div class="card dq-status-card">
-    <span class="eyebrow">Status</span>
-    <p style="margin:0;">
-      This page is the shell for the tool &mdash; nothing is wired up to a live
-      connection yet. Add a source below to describe what you want to connect; the
-      actual connect-and-preview step comes next.
-    </p>
+  <div id="dq-signin-card" class="card">
+    <span class="eyebrow">Sign in required</span>
+    <p>This tool touches real data connections, so it's gated behind Google sign-in.</p>
+    <div id="dq-google-btn"></div>
+    <p id="dq-signin-error" class="form-status is-error" style="display:none;"></p>
   </div>
 
-  <section class="dq-section">
-    <div class="dq-section-header">
-      <h2>Your Data Sources</h2>
-      <button type="button" id="dq-add-toggle" class="form-submit dq-add-btn">+ Add Data Source</button>
+  <div id="dq-app" hidden>
+
+    <div class="card dq-status-card">
+      <span class="eyebrow">Signed in as</span>
+      <p style="margin:0;"><span id="dq-user-email"></span> &middot; <button type="button" id="dq-signout" class="dq-link-btn">Sign out</button></p>
     </div>
 
-    <div id="dq-empty-state" class="card dq-empty-state">
-      <p style="margin:0; color: var(--muted);">No data sources yet. Add one to get started.</p>
-    </div>
-
-    <div id="dq-source-list" class="dq-source-list"></div>
-  </section>
-
-  <section id="dq-form-section" class="dq-section" hidden>
-    <div class="card outlook-form">
-      <h2 style="margin-top:0;">Add a Data Source</h2>
-      <form id="dq-form">
-        <div class="form-field">
-          <label for="dq-name">Name</label>
-          <p class="field-example">e.g. &ldquo;Our ERP,&rdquo; &ldquo;Budget spreadsheet&rdquo;</p>
-          <input type="text" id="dq-name" name="name" maxlength="60" required>
-        </div>
-
-        <div class="form-field">
-          <label for="dq-type">Source type</label>
-          <select id="dq-type" name="type" required>
-            <option value="database">Database (SQL)</option>
-            <option value="api">API</option>
-            <option value="file">File / Spreadsheet</option>
-          </select>
-        </div>
-
-        <div class="form-field">
-          <label for="dq-target">What are you looking for from this source?</label>
-          <p class="field-example">e.g. &ldquo;Customer list,&rdquo; &ldquo;Financial transactions&rdquo;</p>
-          <input type="text" id="dq-target" name="target" maxlength="80">
-        </div>
-
-        <div class="form-field">
-          <label for="dq-notes">Notes</label>
-          <p class="field-example">Anything about how to reach it &mdash; host, VPN required, auth style. No passwords or keys here yet; secure credential storage is the next step we'll build.</p>
-          <textarea id="dq-notes" name="notes" rows="3" maxlength="500"></textarea>
-        </div>
-
-        <button type="submit" class="form-submit">Save Data Source</button>
-        <button type="button" id="dq-cancel" class="dq-cancel-btn">Cancel</button>
-        <p class="form-status" role="status"></p>
-      </form>
-    </div>
-  </section>
-
-  <section class="dq-section">
-    <h2>Ask About Data Quality</h2>
-    <div class="card">
-      <div class="form-field" style="margin-bottom: 1rem;">
-        <textarea id="dq-question" rows="2" maxlength="500" placeholder="e.g. Are customer IDs consistent between the ERP and the CRM?" disabled></textarea>
-      </div>
-      <button type="button" class="form-submit" disabled>Ask</button>
-      <p style="margin: 0.75rem 0 0; color: var(--muted); font-size: 0.85rem;">
-        Available once at least one source is connected and its data has been pulled in full.
+    <div class="card dq-status-card">
+      <span class="eyebrow">Status</span>
+      <p style="margin:0;">
+        Database connections (Postgres and MySQL) are live. Queries are
+        enforced read-only and row-capped on the server, regardless of what's
+        typed here. APIs, files/spreadsheets, and VPN-gated sources aren't
+        wired up yet.
       </p>
     </div>
-  </section>
+
+    <section class="dq-section">
+      <div class="dq-section-header">
+        <h2>Your Data Sources</h2>
+        <button type="button" id="dq-add-toggle" class="form-submit dq-add-btn">+ Add Data Source</button>
+      </div>
+
+      <div id="dq-empty-state" class="card dq-empty-state">
+        <p style="margin:0; color: var(--muted);">No data sources yet. Add one to get started.</p>
+      </div>
+
+      <div id="dq-source-list" class="dq-source-list"></div>
+    </section>
+
+    <section id="dq-form-section" class="dq-section" hidden>
+      <div class="card outlook-form">
+        <h2 style="margin-top:0;">Add a Data Source</h2>
+        <form id="dq-form">
+          <div class="form-field">
+            <label for="dq-name">Name</label>
+            <p class="field-example">e.g. &ldquo;Our ERP,&rdquo; &ldquo;Budget database&rdquo;</p>
+            <input type="text" id="dq-name" name="name" maxlength="60" required>
+          </div>
+
+          <div class="form-field">
+            <label for="dq-type">Source type</label>
+            <select id="dq-type" name="type" required>
+              <option value="database">Database (SQL)</option>
+              <option value="api">API &mdash; coming soon</option>
+              <option value="file">File / Spreadsheet &mdash; coming soon</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="dq-target">What are you looking for from this source?</label>
+            <p class="field-example">e.g. &ldquo;Customer list,&rdquo; &ldquo;Financial transactions&rdquo;</p>
+            <input type="text" id="dq-target" name="target" maxlength="80">
+          </div>
+
+          <div id="dq-db-fields">
+            <div class="form-field">
+              <label for="dq-engine">Engine</label>
+              <select id="dq-engine" name="engine">
+                <option value="postgres">PostgreSQL</option>
+                <option value="mysql">MySQL</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="dq-host">Host</label>
+              <input type="text" id="dq-host" name="host" maxlength="200">
+            </div>
+            <div class="form-field">
+              <label for="dq-port">Port</label>
+              <input type="number" id="dq-port" name="port" value="5432">
+            </div>
+            <div class="form-field">
+              <label for="dq-database">Database name</label>
+              <input type="text" id="dq-database" name="database" maxlength="120">
+            </div>
+            <div class="form-field">
+              <label for="dq-username">Username</label>
+              <p class="field-example">Use a read-only account for this connection.</p>
+              <input type="text" id="dq-username" name="username" maxlength="120" autocomplete="off">
+            </div>
+            <div class="form-field">
+              <label for="dq-password">Password</label>
+              <input type="password" id="dq-password" name="password" maxlength="200" autocomplete="new-password">
+            </div>
+            <div class="form-field">
+              <label><input type="checkbox" id="dq-ssl" name="ssl"> Require SSL</label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="dq-notes">Notes</label>
+            <textarea id="dq-notes" name="notes" rows="3" maxlength="500"></textarea>
+          </div>
+
+          <button type="submit" class="form-submit">Save Data Source</button>
+          <button type="button" id="dq-cancel" class="dq-cancel-btn">Cancel</button>
+          <p class="form-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="dq-section">
+      <h2>Ask About Data Quality</h2>
+      <div class="card">
+        <div class="form-field">
+          <label for="dq-question-source">Data source</label>
+          <select id="dq-question-source"></select>
+        </div>
+        <div class="form-field">
+          <label for="dq-question">SQL query</label>
+          <p class="field-example">Read-only SELECT statements only &mdash; enforced on the server. Natural-language questions are a later step; for now, write the query.</p>
+          <textarea id="dq-question" rows="3" maxlength="2000" placeholder="e.g. SELECT customer_id, COUNT(*) FROM orders GROUP BY customer_id HAVING COUNT(*) > 1"></textarea>
+        </div>
+        <button type="button" id="dq-ask-btn" class="form-submit">Run Query</button>
+        <p id="dq-ask-status" class="form-status" role="status"></p>
+        <div id="dq-ask-result"></div>
+      </div>
+    </section>
+
+  </div>
 
 </main>
 

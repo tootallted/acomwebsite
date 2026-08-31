@@ -547,7 +547,59 @@ footer {
 }
 .dq-preview-result {
   margin: 0.75rem 0 0;
+}
+.dq-preview-empty {
   font-size: 0.85rem;
   font-style: italic;
   color: var(--muted);
+}
+.dq-table-input {
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  width: 10rem;
+}
+.dq-table-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.dq-link-btn {
+  font: inherit;
+  font-size: inherit;
+  background: none;
+  border: none;
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.dq-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.dq-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.dq-result-table th,
+.dq-result-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.dq-result-table thead {
+  background: var(--card);
+}
+.dq-result-table tbody tr:last-child td {
+  border-bottom: none;
+}
+#dq-google-btn {
+  margin: 1rem 0 0.5rem;
 }
