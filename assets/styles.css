@@ -448,3 +448,106 @@ footer {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+/* Data Quality tool */
+.dq-status-card {
+  margin-bottom: 2rem;
+}
+.dq-section {
+  margin-bottom: 2.5rem;
+}
+.dq-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.dq-section-header h2,
+.dq-section > h2 {
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+.dq-section-header h2 {
+  margin-bottom: 0;
+}
+.dq-add-btn {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.dq-empty-state {
+  text-align: center;
+}
+.dq-source-list {
+  display: grid;
+  gap: 1.25rem;
+}
+.dq-source-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.dq-source-card-head h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.dq-badge {
+  background: var(--accent);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.dq-source-target {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+}
+.dq-source-notes {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.dq-source-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.dq-preview-btn,
+.dq-remove-btn,
+.dq-cancel-btn {
+  font: inherit;
+  font-size: 0.85rem;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: var(--fg);
+  cursor: pointer;
+}
+.dq-preview-btn:hover,
+.dq-cancel-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.dq-remove-btn:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+.dq-cancel-btn {
+  background: none;
+  margin-left: 0.75rem;
+}
+.dq-preview-result {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--muted);
+}
